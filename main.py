@@ -7,7 +7,7 @@ from fastapi.middleware.cors import CORSMiddleware
 app = FastAPI()
 
 # Load the model
-with open("final_model.pkl", "rb") as f:
+with open("./final_model.pkl", "rb") as f:
     model = pickle.load(f)
 
 # Load the CSV data
