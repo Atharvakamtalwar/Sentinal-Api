@@ -15,6 +15,11 @@ df = pd.read_csv("./sampled_data.csv")
 
 request_counter = 0
 
+origins = [
+    "http://localhost:5173",  # Vite/React Dev Server
+    "http://127.0.0.1:5173"   # Alternate local address
+]
+
 app.add_middleware(
     CORSMiddleware,
     allow_origins=["*"],  # List of allowed origins
@@ -28,11 +33,12 @@ def predict():
     global request_counter
     
     # Alternate prediction logic
-    remainder = request_counter % 10
-    if 0 < remainder <= 5:
-        p = 0
+    remainder = request_counter % 4  
+    if remainder < 2:
+        p = 0  
     else:
-        p = 1
+        p = 1 
+
     
     # Filter data
     filtered_df = df[df["label"] == p]
@@ -46,6 +52,7 @@ def predict():
     
     # Increment counter
     request_counter += 1
+    random_row = random_row.applymap(lambda x: abs(x) if isinstance(x, (int, float)) else x)
     
     return {
         "row": random_row.to_dict(orient="records")[0],
